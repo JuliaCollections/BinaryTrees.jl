@@ -81,6 +81,10 @@ using Test
     tree[2] = 20
     tree[1] = 10
     tree[3] = 30
+    # deleting a key that does not exist 
+    # does not change the tree
+    delete!(tree, 4)
+    @test tree === tree
     delete!(tree, 3)
     @test !isnothing(tree.root)
     @test !isnothing(tree.root.left)
@@ -94,25 +98,47 @@ using Test
 
     # right rotate
     tree = AVLTree{Int,Int}()
-    tree[4] = 40
-    tree[2] = 20
-    tree[5] = 50
-    tree[1] = 10
     tree[3] = 30
-    delete!(tree, 4)
+    tree[2] = 20
+    tree[10] = 0
+    tree[1] = 10
+    delete!(tree, 10)
     @test tree.root.key == 2
     @test tree.root.left.key == 1
-    @test tree.root.right.key == 5
-    @test tree.root.right.left.key == 3
+    @test tree.root.right.key == 3
 
     # left rotate
-    # TODO
+    tree = AVLTree{Int,Int}()
+    tree[1] = 10
+    tree[-10] = 0
+    tree[2] = 20
+    tree[3] = 30
+    delete!(tree, -10)
+    @test tree.root.key == 2
+    @test tree.root.left.key == 1
+    @test tree.root.right.key == 3
 
     # left-right rotate
-    # TODO
+    tree = AVLTree{Int,Int}()
+    tree[3] = 30
+    tree[1] = 10
+    tree[10] = 0
+    tree[2] = 20
+    delete!(tree, 10)
+    @test tree.root.key == 2
+    @test tree.root.left.key == 1
+    @test tree.root.right.key == 3
 
     # right-left rotate
-    # TODO
+    tree = AVLTree{Int,Int}()
+    tree[1] = 10
+    tree[-10] = 0
+    tree[3] = 30
+    tree[2] = 20
+    delete!(tree, -10)
+    @test tree.root.key == 2
+    @test tree.root.left.key == 1
+    @test tree.root.right.key == 3
 
     # tree that accepts any types
     tree = AVLTree()
