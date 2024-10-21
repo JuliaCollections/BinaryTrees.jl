@@ -43,6 +43,43 @@ end
 # AVL TREE
 # ---------
 
+"""
+    AVLTree{K,V}()
+
+Construct an empty AVL Tree with keys of type `K`
+and values of type `V`.
+
+    AVLTree()
+
+Construct an empty AVL Tree that stores keys and values
+of any type, alias for `AVLTree{Any,Any}()`.
+
+The keys of AVL Tree  must implement sorting operators (`>`, `<`)
+and comparison operators (`=`, `≠`)
+
+# Examples
+
+```julia
+tree = AVLTree{Int,Float64}()
+
+# add nodes to the tree
+tree[2] = 2.2 # root node
+tree[1] = 1.1 # left node
+tree[3] = 3.3 # right node
+
+# update the value of a node
+tree[2] = 2.4
+
+# get the value of a node using its key
+tree[2] # 2.4
+tree[1] # 1.1
+tree[3] # 3.3
+
+# delete nodes from the tree
+delete!(tree, 1)
+delete!(tree, 3)
+```
+"""
 mutable struct AVLTree{K,V}
   root::Union{AVLNode{K,V},Nothing}
 end
@@ -50,17 +87,34 @@ end
 AVLTree{K,V}() where {K,V} = AVLTree{K,V}(nothing)
 AVLTree() = AVLTree{Any,Any}()
 
+"""
+    getindex(tree::AVLTree{K}, key::K) where {K}
+
+Get the value stored in the node that has `key`.
+"""
 function Base.getindex(tree::AVLTree{K}, key::K) where {K}
   node = _search(tree, key)
   isnothing(node) && throw(KeyError(key))
   node.value
 end
 
+"""
+    setindex!(tree::AVLTree{K}, value, key::K) where {K}
+
+Add a node to the tree with `key` and `value`.
+If a node with `key` already exists, the value
+of the node will be updated.
+"""
 function Base.setindex!(tree::AVLTree{K}, value, key::K) where {K}
   tree.root = _insert!(tree.root, key, value)
   tree
 end
 
+"""
+    delete!(tree::AVLTree{K}, key::K) where {K}
+
+Delete the node that has `key` from the tree.
+"""
 function Base.delete!(tree::AVLTree{K}, key::K) where {K}
   tree.root = _delete!(tree.root, key)
   tree
