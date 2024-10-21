@@ -67,10 +67,10 @@ tree[2] = 2.2 # root node
 tree[1] = 1.1 # left node
 tree[3] = 3.3 # right node
 
-# update the value of a node
+# update the value of the node
 tree[2] = 2.4
 
-# get the value of a node using its key
+# get the value of the node using its key
 tree[2] # 2.4
 tree[1] # 1.1
 tree[3] # 3.3
