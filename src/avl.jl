@@ -2,40 +2,18 @@
 # AVL NODE
 # ---------
 
-mutable struct AVLNode{K,V}
+mutable struct AVLNode{K,V} <: BinaryNode
   key::K
   value::V
+  height::Int
   left::Union{AVLNode{K,V},Nothing}
   right::Union{AVLNode{K,V},Nothing}
-  height::Int
 end
 
-AVLNode(key, value) = AVLNode(key, value, nothing, nothing, 1)
+AVLNode(key, value) = AVLNode(key, value, 1, nothing, nothing)
 
 Base.convert(::Type{AVLNode{K,V}}, node::AVLNode) where {K,V} =
-  AVLNode{K,V}(node.key, node.value, node.left, node.right, node.height)
-
-function AbstractTrees.children(node::AVLNode)
-  if !isnothing(node.left) && !isnothing(node.right)
-    (node.left, node.right)
-  elseif !isnothing(node.left)
-    (node.left,)
-  elseif !isnothing(node.right)
-    (node.right,)
-  else
-    ()
-  end
-end
-
-AbstractTrees.NodeType(::Type{<:AVLNode}) = AbstractTrees.HasNodeType()
-AbstractTrees.nodetype(T::Type{<:AVLNode}) = T
-
-function AbstractTrees.printnode(io::IO, node::AVLNode)
-  ioctx = IOContext(io, :compact => true, :limit => true)
-  show(ioctx, node.key)
-  print(ioctx, " => ")
-  show(ioctx, node.value)
-end
+  AVLNode{K,V}(node.key, node.value, node.height, node.left, node.right)
 
 # ---------
 # AVL TREE
@@ -60,72 +38,41 @@ and comparison operators (`=`, `≠`)
 ```julia
 tree = AVLTree{Int,Float64}()
 
-# add nodes to the tree
-tree[2] = 2.2 # root node
-tree[1] = 1.1 # left node
-tree[3] = 3.3 # right node
+# insert nodes into the tree
+BinaryTrees.insert!(tree, 2, 2.2) # root node
+BinaryTrees.insert!(tree, 1, 1.1) # left node
+BinaryTrees.insert!(tree, 3, 3.3) # right node
 
 # update the value of the node
-tree[2] = 2.4
+BinaryTrees.insert!(tree, 2, 2.4)
 
-# get the value of the node using its key
-tree[2] # 2.4
-tree[1] # 1.1
-tree[3] # 3.3
+# search for nodes using their keys
+BinaryTrees.search(tree, 2) # root node
+BinaryTrees.search(tree, 1) # left node
+BinaryTrees.search(tree, 3) # right node
 
 # delete nodes from the tree
-delete!(tree, 1)
-delete!(tree, 3)
+BinaryTrees.delete!(tree, 1)
+BinaryTrees.delete!(tree, 3)
 ```
 """
-mutable struct AVLTree{K,V}
+mutable struct AVLTree{K,V} <: BinaryTree
   root::Union{AVLNode{K,V},Nothing}
 end
 
 AVLTree{K,V}() where {K,V} = AVLTree{K,V}(nothing)
 AVLTree() = AVLTree{Any,Any}()
 
-"""
-    getindex(tree::AVLTree{K}, key::K) where {K}
+search(tree::AVLTree{K}, key::K) where {K} = _search(tree, key)
 
-Get the value stored in the node that has `key`.
-"""
-function Base.getindex(tree::AVLTree{K}, key::K) where {K}
-  node = _search(tree, key)
-  isnothing(node) && throw(KeyError(key))
-  node.value
-end
-
-"""
-    setindex!(tree::AVLTree{K}, value, key::K) where {K}
-
-Add a node to the tree with `key` and `value`.
-If a node with `key` already exists, the value
-of the node will be updated.
-"""
-function Base.setindex!(tree::AVLTree{K}, value, key::K) where {K}
+function insert!(tree::AVLTree{K}, key::K, value) where {K}
   tree.root = _insert!(tree.root, key, value)
   tree
 end
 
-"""
-    delete!(tree::AVLTree{K}, key::K) where {K}
-
-Delete the node that has `key` from the tree.
-"""
-function Base.delete!(tree::AVLTree{K}, key::K) where {K}
+function delete!(tree::AVLTree{K}, key::K) where {K}
   tree.root = _delete!(tree.root, key)
   tree
-end
-
-function Base.show(io::IO, ::MIME"text/plain", tree::AVLTree)
-  if isnothing(tree.root)
-    print(io, "AVLTree()")
-  else
-    println(io, "AVLTree")
-    str = AbstractTrees.repr_tree(tree.root, context=io)
-    print(io, rstrip(str)) # remove \n at end
-  end
 end
 
 # -----------------

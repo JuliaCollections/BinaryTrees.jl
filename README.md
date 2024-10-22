@@ -27,20 +27,20 @@ An AVL tree is a binary search tree that keeps itself balanced to ensure efficie
 ```julia
 tree = AVLTree{Int,Float64}()
 
-# add nodes to the tree
-tree[2] = 2.2 # root node
-tree[1] = 1.1 # left node
-tree[3] = 3.3 # right node
+# insert nodes into the tree
+BinaryTrees.insert!(tree, 2, 2.2) # root node
+BinaryTrees.insert!(tree, 1, 1.1) # left node
+BinaryTrees.insert!(tree, 3, 3.3) # right node
 
 # update the value of the node
-tree[2] = 2.4
+BinaryTrees.insert!(tree, 2, 2.4)
 
-# get the value of the node using its key
-tree[2] # 2.4
-tree[1] # 1.1
-tree[3] # 3.3
+# search for nodes using their keys
+BinaryTrees.search(tree, 2) # root node
+BinaryTrees.search(tree, 1) # left node
+BinaryTrees.search(tree, 3) # right node
 
 # delete nodes from the tree
-delete!(tree, 1)
-delete!(tree, 3)
+BinaryTrees.delete!(tree, 1)
+BinaryTrees.delete!(tree, 3)
 ```
