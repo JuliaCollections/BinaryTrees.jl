@@ -216,13 +216,13 @@ const BT = BinaryTrees
 
     # show
     tree = AVLTree{Int,Int}()
-    @test sprint(show, MIME("text/plain"), tree) == "AVLTree()"
+    @test sprint(show, tree) == "AVLTree()"
     BT.insert!(tree, 3, 30)
     BT.insert!(tree, 2, 20)
     BT.insert!(tree, 4, 40)
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, 5, 50)
-    @test sprint(show, MIME("text/plain"), tree) == """
+    @test sprint(show, tree) == """
     AVLTree
     3 => 30
     ├─ 2 => 20
@@ -230,14 +230,20 @@ const BT = BinaryTrees
     └─ 4 => 40
        └─ 5 => 50"""
 
+    node = BT.search(tree, 1)
+    @test sprint(show, node) == "AVLNode(1 => 10)"
+
     tree = AVLTree{Int}()
     BT.insert!(tree, 2)
     BT.insert!(tree, 1)
     BT.insert!(tree, 3)
-    @test sprint(show, MIME("text/plain"), tree) == """
+    @test sprint(show, tree) == """
     AVLTree
     2
     ├─ 1
     └─ 3"""
+
+    node = BT.search(tree, 1)
+    @test sprint(show, node) == "AVLNode(1)"
   end
 end

@@ -87,7 +87,14 @@ function delete! end
 # IO METHODS
 # -----------
 
-function Base.show(io::IO, ::MIME"text/plain", tree::BinaryTree)
+function Base.show(io::IO, node::BinaryNode)
+  name = nameof(typeof(node))
+  print(io, "$name(")
+  _printkeyvalue(io, node)
+  print(io, ")")
+end
+
+function Base.show(io::IO, tree::BinaryTree)
   name = nameof(typeof(tree))
   if isnothing(tree.root)
     print(io, "$name()")
@@ -119,7 +126,13 @@ end
 AbstractTrees.NodeType(::Type{<:BinaryNode}) = AbstractTrees.HasNodeType()
 AbstractTrees.nodetype(T::Type{<:BinaryNode}) = T
 
-function AbstractTrees.printnode(io::IO, node::BinaryNode)
+AbstractTrees.printnode(io::IO, node::BinaryNode) = _printkeyvalue(io, node)
+
+# -----------------
+# HELPER FUNCTIONS
+# -----------------
+
+function _printkeyvalue(io::IO, node::BinaryNode)
   ioctx = IOContext(io, :compact => true, :limit => true)
   val = value(node)
   if isnothing(val)
