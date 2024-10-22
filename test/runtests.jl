@@ -23,18 +23,7 @@ const BT = BinaryTrees
     @test BT.value(BT.search(tree, 2)) == 20
     @test BT.value(BT.search(tree, 1)) == 10
     @test BT.value(BT.search(tree, 3)) == 30
-
-    # value conversion
-    tree = AVLTree{Int,Float64}()
-    BT.insert!(tree, 2, 20)
-    BT.insert!(tree, 1, 10)
-    BT.insert!(tree, 3, 30)
-    @test BT.value(BT.search(tree, 2)) isa Float64
-    @test BT.value(BT.search(tree, 2)) == 20.0
-    @test BT.value(BT.search(tree, 1)) isa Float64
-    @test BT.value(BT.search(tree, 1)) == 10.0
-    @test BT.value(BT.search(tree, 3)) isa Float64
-    @test BT.value(BT.search(tree, 3)) == 30.0
+    @test isnothing(BT.search(tree, 4))
 
     # update values
     tree = AVLTree{Int,Int}()
@@ -50,6 +39,18 @@ const BT = BinaryTrees
     @test BT.value(BT.search(tree, 2)) == 22
     @test BT.value(BT.search(tree, 1)) == 11
     @test BT.value(BT.search(tree, 3)) == 33
+
+    # value conversion
+    tree = AVLTree{Int,Float64}()
+    BT.insert!(tree, 2, 20)
+    BT.insert!(tree, 1, 10)
+    BT.insert!(tree, 3, 30)
+    @test BT.value(BT.search(tree, 2)) isa Float64
+    @test BT.value(BT.search(tree, 2)) == 20.0
+    @test BT.value(BT.search(tree, 1)) isa Float64
+    @test BT.value(BT.search(tree, 1)) == 10.0
+    @test BT.value(BT.search(tree, 3)) isa Float64
+    @test BT.value(BT.search(tree, 3)) == 30.0
 
     # right rotate
     tree = AVLTree{Int,Int}()
