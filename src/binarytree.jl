@@ -2,6 +2,11 @@
 # BINARY NODE
 # ------------
 
+"""
+    BinaryNode
+
+Binary tree node with key, value and optional left and right children.
+"""
 abstract type BinaryNode end
 
 """
@@ -36,12 +41,24 @@ right(node::BinaryNode) = node.right
 # BINARY TREE
 # ------------
 
+"""
+    BinaryTree
+
+Binary Tree with a root node.
+"""
 abstract type BinaryTree end
+
+"""
+    BinaryTrees.root(tree)
+
+Root node of the `tree`.
+"""
+root(tree::BinaryTree) = tree.root
 
 """
     BinaryTrees.search(tree, key)
 
-Search the tree for the node that has `key`.
+Search the `tree` for the node that has `key`.
 If the tree does not have a node with `key`, `nothing` is returned.
 """
 function search end
@@ -49,7 +66,7 @@ function search end
 """
     BinaryTrees.insert!(tree, key, value)
 
-Insert a node into the tree with `key` and `value`.
+Insert a node into the `tree` with `key` and `value`.
 If a node with `key` already exists, the value
 of the node will be updated.
 """
@@ -58,7 +75,7 @@ function insert! end
 """
     BinaryTrees.delete!(tree, key)
 
-Delete the node that has `key` from the tree.
+Delete the node that has `key` from the `tree`.
 """
 function delete! end
 
