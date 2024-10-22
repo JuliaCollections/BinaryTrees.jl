@@ -1,4 +1,4 @@
-module TreeDataStructures
+module BinaryTrees
 
 import AbstractTrees
 

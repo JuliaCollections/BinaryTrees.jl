@@ -27,8 +27,6 @@ function AbstractTrees.children(node::AVLNode)
   end
 end
 
-AbstractTrees.nodevalue(node::AVLNode) = node.value
-
 AbstractTrees.NodeType(::Type{<:AVLNode}) = AbstractTrees.HasNodeType()
 AbstractTrees.nodetype(T::Type{<:AVLNode}) = T
 
@@ -126,7 +124,7 @@ function Base.show(io::IO, ::MIME"text/plain", tree::AVLTree)
   else
     println(io, "AVLTree")
     str = AbstractTrees.repr_tree(tree.root, context=io)
-    print(io, str[begin:(end - 1)]) # remove \n at end
+    print(io, rstrip(str)) # remove \n at end
   end
 end
 

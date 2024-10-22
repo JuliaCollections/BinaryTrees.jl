@@ -1,21 +1,21 @@
-# TreeDataStructures.jl
+# BinaryTrees.jl
 
-[![Build Status](https://github.com/eliascarv/TreeDataStructures.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/eliascarv/TreeDataStructures.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://codecov.io/gh/eliascarv/TreeDataStructures.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/eliascarv/TreeDataStructures.jl)
+[![Build Status](https://github.com/eliascarv/BinaryTrees.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/eliascarv/BinaryTrees.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://codecov.io/gh/eliascarv/BinaryTrees.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/eliascarv/BinaryTrees.jl)
 
 ## Overview
 
-This package provides a collection of tree data structures implemented in Julia. 
+This package provides a collection of binary trees implemented in Julia. 
 
-Currently, it includes the following tree data structures:
+Currently, it includes the following binary trees:
 * **AVL Tree**: A self-balancing binary search tree.
 
 ## Installation
 
-To install TreeDataStructures.jl, use the Julia's package manager:
+To install BinaryTrees.jl, use the Julia's package manager:
 
 ```
-] add https://github.com/eliascarv/TreeDataStructures.jl
+] add https://github.com/eliascarv/BinaryTrees.jl
 ```
 
 ## AVL Tree

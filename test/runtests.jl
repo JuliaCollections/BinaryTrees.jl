@@ -1,8 +1,8 @@
-using TreeDataStructures
+using BinaryTrees
 using AbstractTrees
 using Test
 
-@testset "TreeDataStructures.jl" begin
+@testset "BinaryTrees.jl" begin
   @testset "AVLTree" begin
     # insert
     tree = AVLTree{Int,Int}()
@@ -179,19 +179,14 @@ using Test
     tree[4] = 40
     tree[1] = 10
     tree[5] = 50
-    root = tree.root
-    @test children(root) === (root.left, root.right)
-    @test children(root.left) === (root.left.left,)
-    @test children(root.right) === (root.right.right,)
-    @test children(root.left.left) === ()
-    @test children(root.right.right) === ()
-    @test nodevalue(root) == 30
-    @test nodevalue(root.left) == 20
-    @test nodevalue(root.right) == 40
-    @test nodevalue(root.left.left) == 10
-    @test nodevalue(root.right.right) == 50
-    @test NodeType(root) === HasNodeType()
-    @test nodetype(root) === typeof(root)
+    @test children(tree.root) === (tree.root.left, tree.root.right)
+    @test children(tree.root.left) === (tree.root.left.left,)
+    @test children(tree.root.right) === (tree.root.right.right,)
+    @test children(tree.root.left.left) === ()
+    @test children(tree.root.right.right) === ()
+    @test nodevalue(tree.root) === tree.root
+    @test NodeType(tree.root) === HasNodeType()
+    @test nodetype(tree.root) === typeof(tree.root)
 
     # show
     tree = AVLTree{Int,Int}()
