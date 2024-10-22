@@ -5,7 +5,7 @@
 """
     BinaryNode
 
-Binary tree node with key, value and optional left and right children.
+Binary tree node with key and optional value, left and right children.
 """
 abstract type BinaryNode end
 
@@ -19,7 +19,7 @@ key(node::BinaryNode) = node.key
 """
     BinaryTrees.value(node)
 
-Value of the `node`.
+Value of the `node`, if it does not exist, `nothing` is returned.
 """
 value(node::BinaryNode) = node.value
 
@@ -69,6 +69,10 @@ function search end
 Insert a node into the `tree` with `key` and `value`.
 If a node with `key` already exists, the value
 of the node will be updated.
+
+    BinaryTrees.insert!(tree, key)
+
+Insert a node into the `tree` with `key` and no value.
 """
 function insert! end
 
@@ -117,7 +121,12 @@ AbstractTrees.nodetype(T::Type{<:BinaryNode}) = T
 
 function AbstractTrees.printnode(io::IO, node::BinaryNode)
   ioctx = IOContext(io, :compact => true, :limit => true)
-  show(ioctx, key(node))
-  print(ioctx, " => ")
-  show(ioctx, value(node))
+  val = value(node)
+  if isnothing(val)
+    show(ioctx, key(node))
+  else
+    show(ioctx, key(node))
+    print(ioctx, " => ")
+    show(ioctx, val)
+  end
 end

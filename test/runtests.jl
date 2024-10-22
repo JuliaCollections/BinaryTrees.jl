@@ -156,13 +156,32 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.right |> BT.left |> BT.key == 3
 
     # tree that accepts any types
-    tree = AVLTree()
+    tree = AVLTree{Int,Any}()
     BT.insert!(tree, 2, 'A')
     BT.insert!(tree, 1, 1.1)
     BT.insert!(tree, 3, "test")
     @test BT.value(BT.search(tree, 2)) == 'A'
     @test BT.value(BT.search(tree, 1)) == 1.1
     @test BT.value(BT.search(tree, 3)) == "test"
+    BT.delete!(tree, 3)
+    @test !isnothing(BT.root(tree))
+    @test !isnothing(BT.left(BT.root(tree)))
+    @test isnothing(BT.right(BT.root(tree)))
+    BT.delete!(tree, 1)
+    @test !isnothing(BT.root(tree))
+    @test isnothing(BT.left(BT.root(tree)))
+    @test isnothing(BT.right(BT.root(tree)))
+    BT.delete!(tree, 2)
+    @test isnothing(BT.root(tree))
+
+    # tree without values
+    tree = AVLTree{Int}()
+    BT.insert!(tree, 2)
+    BT.insert!(tree, 1)
+    BT.insert!(tree, 3)
+    @test isnothing(BT.value(BT.search(tree, 2)))
+    @test isnothing(BT.value(BT.search(tree, 1)))
+    @test isnothing(BT.value(BT.search(tree, 3)))
     BT.delete!(tree, 3)
     @test !isnothing(BT.root(tree))
     @test !isnothing(BT.left(BT.root(tree)))
@@ -210,5 +229,15 @@ const BT = BinaryTrees
     │  └─ 1 => 10
     └─ 4 => 40
        └─ 5 => 50"""
+
+    tree = AVLTree{Int}()
+    BT.insert!(tree, 2)
+    BT.insert!(tree, 1)
+    BT.insert!(tree, 3)
+    @test sprint(show, MIME("text/plain"), tree) == """
+    AVLTree
+    2
+    ├─ 1
+    └─ 3"""
   end
 end

@@ -43,4 +43,10 @@ BinaryTrees.search(tree, 3) # right node
 # delete nodes from the tree
 BinaryTrees.delete!(tree, 1)
 BinaryTrees.delete!(tree, 3)
+
+# tree that only has keys
+tree = AVLTree{Int}()
+BinaryTrees.insert!(tree, 2) # root node
+BinaryTrees.insert!(tree, 1) # left node
+BinaryTrees.insert!(tree, 3) # right node
 ```

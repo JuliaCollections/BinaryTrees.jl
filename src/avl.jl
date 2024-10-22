@@ -25,10 +25,9 @@ Base.convert(::Type{AVLNode{K,V}}, node::AVLNode) where {K,V} =
 Construct an empty AVL Tree with keys of type `K`
 and values of type `V`.
 
-    AVLTree()
+    AVLTree{K}()
 
-Construct an empty AVL Tree that stores keys and values
-of any type, alias for `AVLTree{Any,Any}()`.
+Construct an empty AVL tree with no values and keys of type `K`.
 
 The keys of AVL Tree  must implement sorting operators (`>`, `<`)
 and comparison operators (`=`, `≠`)
@@ -54,6 +53,12 @@ BinaryTrees.search(tree, 3) # right node
 # delete nodes from the tree
 BinaryTrees.delete!(tree, 1)
 BinaryTrees.delete!(tree, 3)
+
+# tree that only has keys
+tree = AVLTree{Int}()
+BinaryTrees.insert!(tree, 2) # root node
+BinaryTrees.insert!(tree, 1) # left node
+BinaryTrees.insert!(tree, 3) # right node
 ```
 """
 mutable struct AVLTree{K,V} <: BinaryTree
@@ -61,7 +66,7 @@ mutable struct AVLTree{K,V} <: BinaryTree
 end
 
 AVLTree{K,V}() where {K,V} = AVLTree{K,V}(nothing)
-AVLTree() = AVLTree{Any,Any}()
+AVLTree{K}() where {K} = AVLTree{K,Nothing}()
 
 search(tree::AVLTree{K}, key::K) where {K} = _search(tree, key)
 
@@ -69,6 +74,8 @@ function insert!(tree::AVLTree{K}, key::K, value) where {K}
   tree.root = _insert!(tree.root, key, value)
   tree
 end
+
+insert!(tree::AVLTree{K,Nothing}, key::K) where {K} = insert!(tree, key, nothing)
 
 function delete!(tree::AVLTree{K}, key::K) where {K}
   tree.root = _delete!(tree.root, key)
