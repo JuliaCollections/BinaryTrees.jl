@@ -52,7 +52,7 @@ const BT = BinaryTrees
     @test BT.value(BT.search(tree, 3)) isa Float64
     @test BT.value(BT.search(tree, 3)) == 30.0
 
-    # right rotate
+    # insert: right rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 3, 30)
     BT.insert!(tree, 2, 20)
@@ -61,7 +61,7 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.left |> BT.key == 1
     @test tree |> BT.root |> BT.right |> BT.key == 3
 
-    # left rotate
+    # insert: left rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, 2, 20)
@@ -70,7 +70,7 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.left |> BT.key == 1
     @test tree |> BT.root |> BT.right |> BT.key == 3
 
-    # left-right rotate
+    # insert: left-right rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 3, 30)
     BT.insert!(tree, 1, 10)
@@ -79,7 +79,7 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.left |> BT.key == 1
     @test tree |> BT.root |> BT.right |> BT.key == 3
 
-    # right-left rotate
+    # insert: right-left rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, 3, 30)
@@ -108,7 +108,7 @@ const BT = BinaryTrees
     BT.delete!(tree, 2)
     @test isnothing(BT.root(tree))
 
-    # right rotate
+    # delete: right rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 3, 30)
     BT.insert!(tree, 2, 20)
@@ -119,7 +119,7 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.left |> BT.key == 1
     @test tree |> BT.root |> BT.right |> BT.key == 3
 
-    # left rotate
+    # delete: left rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, -10, 0)
@@ -130,7 +130,7 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.left |> BT.key == 1
     @test tree |> BT.root |> BT.right |> BT.key == 3
 
-    # left-right rotate
+    # delete: left-right rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 3, 30)
     BT.insert!(tree, 1, 10)
@@ -141,7 +141,7 @@ const BT = BinaryTrees
     @test tree |> BT.root |> BT.left |> BT.key == 1
     @test tree |> BT.root |> BT.right |> BT.key == 3
 
-    # right-left rotate
+    # delete: right-left rotate
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 1, 10)
     BT.insert!(tree, -10, 0)
