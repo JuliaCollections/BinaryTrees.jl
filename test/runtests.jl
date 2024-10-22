@@ -6,7 +6,16 @@ const BT = BinaryTrees
 
 @testset "BT.jl" begin
   @testset "AVLTree" begin
-    # insert
+    # internal node conversion
+    node1 = BT.AVLNode(1, 2)
+    node2 = convert(BT.AVLNode{Float64,Float64}, node1)
+    @test node2 isa BT.AVLNode{Float64,Float64}
+    @test BT.key(node2) == 1.0
+    @test BT.value(node2) == 2.0
+    node3 = convert(typeof(node1), node1)
+    @test node3 === node1
+
+    # insert & search
     tree = AVLTree{Int,Int}()
     BT.insert!(tree, 2, 20)
     BT.insert!(tree, 1, 10)
@@ -192,6 +201,64 @@ const BT = BinaryTrees
     @test isnothing(BT.right(BT.root(tree)))
     BT.delete!(tree, 2)
     @test isnothing(BT.root(tree))
+
+    # tree with keys that implement ordering relations
+    tree = AVLTree{String,Int}()
+    BT.insert!(tree, "key2", 2)
+    BT.insert!(tree, "key1", 1)
+    BT.insert!(tree, "key3", 3)
+    @test BT.value(BT.search(tree, "key2")) == 2
+    @test BT.value(BT.search(tree, "key1")) == 1
+    @test BT.value(BT.search(tree, "key3")) == 3
+    tree = AVLTree{NTuple{3,Int},Int}()
+    BT.insert!(tree, (0, 1, 0), 2)
+    BT.insert!(tree, (0, 0, 1), 1)
+    BT.insert!(tree, (1, 0, 0), 3)
+    @test BT.value(BT.search(tree, (0, 1, 0))) == 2
+    @test BT.value(BT.search(tree, (0, 0, 1))) == 1
+    @test BT.value(BT.search(tree, (1, 0, 0))) == 3
+
+    # type stability
+    tree = AVLTree{Int,Int}()
+    @inferred BT.insert!(tree, 2, 20)
+    @inferred BT.insert!(tree, 1, 10)
+    @inferred BT.insert!(tree, 3, 30)
+    @inferred Nothing BT.search(tree, 2)
+    @inferred Nothing BT.search(tree, 1)
+    @inferred Nothing BT.search(tree, 3)
+    @inferred BT.delete!(tree, 2)
+    @inferred BT.delete!(tree, 1)
+    @inferred BT.delete!(tree, 3)
+    tree = AVLTree{Int}()
+    @inferred BT.insert!(tree, 2)
+    @inferred BT.insert!(tree, 1)
+    @inferred BT.insert!(tree, 3)
+    @inferred Nothing BT.search(tree, 2)
+    @inferred Nothing BT.search(tree, 1)
+    @inferred Nothing BT.search(tree, 3)
+    @inferred BT.delete!(tree, 2)
+    @inferred BT.delete!(tree, 1)
+    @inferred BT.delete!(tree, 3)
+    tree = AVLTree{String,Int}()
+    @inferred BT.insert!(tree, "key2", 2)
+    @inferred BT.insert!(tree, "key1", 1)
+    @inferred BT.insert!(tree, "key3", 3)
+    @inferred Nothing BT.search(tree, "key2")
+    @inferred Nothing BT.search(tree, "key1")
+    @inferred Nothing BT.search(tree, "key3")
+    @inferred BT.delete!(tree, "key2")
+    @inferred BT.delete!(tree, "key1")
+    @inferred BT.delete!(tree, "key3")
+    tree = AVLTree{NTuple{3,Int},Int}()
+    @inferred BT.insert!(tree, (0, 1, 0), 2)
+    @inferred BT.insert!(tree, (0, 0, 1), 1)
+    @inferred BT.insert!(tree, (1, 0, 0), 3)
+    @inferred Nothing BT.search(tree, (0, 1, 0))
+    @inferred Nothing BT.search(tree, (0, 0, 1))
+    @inferred Nothing BT.search(tree, (1, 0, 0))
+    @inferred BT.delete!(tree, (0, 1, 0))
+    @inferred BT.delete!(tree, (0, 0, 1))
+    @inferred BT.delete!(tree, (1, 0, 0))
 
     # AbstractTrees interface
     tree = AVLTree{Int,Int}()

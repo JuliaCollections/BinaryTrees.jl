@@ -15,6 +15,8 @@ AVLNode(key, value) = AVLNode(key, value, 1, nothing, nothing)
 Base.convert(::Type{AVLNode{K,V}}, node::AVLNode) where {K,V} =
   AVLNode{K,V}(node.key, node.value, node.height, node.left, node.right)
 
+Base.convert(::Type{AVLNode{K,V}}, node::AVLNode{K,V}) where {K,V} = node
+
 # ---------
 # AVL TREE
 # ---------
@@ -29,8 +31,7 @@ and values of type `V`.
 
 Construct an empty AVL tree with no values and keys of type `K`.
 
-The keys of AVL Tree  must implement sorting operators (`>`, `<`)
-and comparison operators (`=`, `≠`)
+The keys of AVL Tree must implement ordering relations (`>`, `<`).
 
 # Examples
 
@@ -88,10 +89,16 @@ end
 
 function _search(tree, key)
   node = tree.root
-  while !isnothing(node) && key ≠ node.key
-    node = key < node.key ? node.left : node.right
+  while !isnothing(node)
+    if key < node.key
+      node = node.left
+    elseif key > node.key
+      node = node.right
+    else
+      return node
+    end
   end
-  node
+  nothing
 end
 
 function _insert!(root, key, value)
